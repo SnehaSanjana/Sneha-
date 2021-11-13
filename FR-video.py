@@ -1,0 +1,45 @@
+import numpy as np
+import cv2
+from random import randrange
+
+
+#load some pretrained data on face frontals from opencv (haarcascade algorithm) 
+trained_face_data = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+
+
+#to input a video 
+vid = cv2.VideoCapture('hiokay.mp4')
+
+
+#iterate forever over frames
+while True:
+    
+    #read the current frame
+    successful_frame_read, frame = vid.read()
+    
+    #must convert to grayscale
+    grayscale_img = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    
+    #detect faces
+    face_coordinates = trained_face_data.detectMultiScale(grayscale_img)
+    
+    #draw rectangles around faces
+    for(x,y,w,h) in face_coordinates:
+         cv2.rectangle(frame, (x,y), (x+w , y+h), (0,255,0), 2)
+    
+    #displaying the image with detection
+    cv2.imshow('Basic Face Detector',frame)
+    key = cv2.waitKey(1)
+
+    #stop if 'q' or 'Q' is pressed 
+    if key==81 or key==113:
+        break
+
+#release the VideoCapture object
+vid.release()
+
+
+print("Code Completed!")
+
+
+ 
